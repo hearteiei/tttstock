@@ -89,6 +89,7 @@ include('includes/navbar.php');
                                 <th>สาขา</th>
                                 <th>จำนวน</th>
                                 <th>คงเหลือ</th>
+                                <th>เบิก/เพิ่ม</th>
                                 <th>เวลา</th>
                             </tr>
                         </thead>

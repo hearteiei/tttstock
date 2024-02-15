@@ -19,35 +19,16 @@ $name = $_POST['name']; // Item name
 $branch = $_POST['branch']; // Branch name
 $remain = $_POST['remainnew']; // Branch name
 
-
-$sql_check_remaining = "SELECT stock FROM itembranch
-                        WHERE itembranch.item_id IN (SELECT item_id FROM item WHERE item_name = '$name') 
-                        AND branch_id IN (SELECT branch_id FROM branch WHERE branch_name = '$branch')";
-$result_check_remaining = $conn->query($sql_check_remaining);
-
-if ($result_check_remaining->num_rows > 0) {
-    $row = $result_check_remaining->fetch_assoc();
-    $remaining_quantity = $row["stock"];
-
-    if ($inputValue > $remaining_quantity) {
-        // Input quantity is greater than remaining quantity
-        echo "Input quantity cannot be greater than remaining quantity.";
-        exit; // Stop script execution
-    }
-}
-
-
 // Prepare SQL statement
-$sql_update_stock = "UPDATE itembranch
-        SET stock = stock - $inputValue
-        WHERE itembranch.item_id IN (SELECT item_id FROM item WHERE item_name = '$name') 
-        AND branch_id IN (SELECT branch_id FROM branch WHERE branch_name = '$branch')";
+$sql_update_stock = "UPDATE item 
+SET stockmid = stockmid + '$inputValue' 
+WHERE item_id IN (SELECT item_id FROM item WHERE item_name = '$name')";
 
 // Execute SQL statement
 if ($conn->query($sql_update_stock) === TRUE) {
     // If update is successful, insert transaction into history table
     $sql_insert_history = "INSERT INTO history (item_name, branch_name, quantity, remain, action)
-                            VALUES ('$name', '$branch', '$inputValue','$remain','เบิก')";
+                            VALUES ('$name', '$branch', '$inputValue','$remain','เพิ่ม')";
     if ($conn->query($sql_insert_history) === TRUE) {
         // If insertion is successful
         echo "Stock updated and transaction recorded successfully";
@@ -62,4 +43,3 @@ if ($conn->query($sql_update_stock) === TRUE) {
 
 // Close database connection
 $conn->close();
-?>
