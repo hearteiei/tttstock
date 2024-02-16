@@ -4,8 +4,15 @@
 session_start();
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
+
     header('Location: index.html');
     exit;
+}
+$branchName = htmlspecialchars($_GET['branch']);
+if ($branchName == "soi13") {
+    $branch = "13";
+} elseif ($branchName == "soi17") {
+    $branch = "17";
 }
 include('includes/header.php');
 include('includes/navbar.php');
@@ -63,7 +70,7 @@ include('includes/navbar.php');
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title m-0 font-weight-bold custom4" id="withdrawModalLabel">เพิ่มสินค้าเข้าครัวกลาง</h5>
+                    <h5 class="modal-title m-0 font-weight-bold custom4" id="withdrawModalLabel">เบิกสินค้า</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -72,14 +79,26 @@ include('includes/navbar.php');
                     <p class="h4 mb-1 text-gray-800" id="withdrawItemName"></p>
                     <div class="row">
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0">คงเหลือ</p>
+                            <p class="h4 mb-1 text-gray-800 m-0">ครัวกลางคงเหลือ</p>
                         </div>
                         <div class="col">
                             <p class="h4 mb-1 text-gray-800 m-0" id="remain"></p>
                         </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <?php
+                            echo "<p class='h4 mb-1 text-gray-800 m-0'>ซอย $branch คงเหลือ";
+                            ?>
+                        </div>
+                        <div class="col">
+                            <p class="h4 mb-1 text-gray-800 m-0" id="remainbranch"></p>
+                        </div>
+
                     </div>
                     <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">เพิ่มจำนวน</p>
+                        <p class="h4 mb-1 text-gray-800 m-0">เบิกจำนวน</p>
                     </div>
                     <!-- Input field on the next line -->
                     <div class="row mt-3">
@@ -109,20 +128,36 @@ include('includes/navbar.php');
                     <p class="h4 mb-1 text-gray-800" id="withdrawItemName"></p>
                     <div class="row">
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0">จำนวน</p>
+                        <?php
+                            echo "<p class='h4 mb-1 text-gray-800 m-0'>ส่งไปซอย $branch จำนวน";
+                            ?>
                         </div>
                         <div class="col">
                             <p class="h4 mb-1 text-gray-800 m-0" id="withdrawInputs"></p>
                         </div>
+
                     </div>
-                    <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">คงเหลือ</p>
-                    </div>
-                    <!-- Input field on the next line -->
-                    <div class="row mt-3">
+                    <div class="row">
+                        <div class="col">
+                            <?php
+                            echo "<p class='h4 mb-1 text-gray-800 m-0'>ซอย$branch คงเหลือ";
+                            ?>
+                        </div>
                         <div class="col">
                             <p class="h4 mb-1 text-gray-800 m-0" id="remains"></p>
                         </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <?php
+                            echo "<p class='h4 mb-1 text-gray-800 m-0'>ครัวกลางคงเหลือ";
+                            ?>
+                        </div>
+                        <div class="col">
+                            <p class="h4 mb-1 text-gray-800 m-0" id="remainm"></p>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -138,7 +173,9 @@ include('includes/navbar.php');
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">เพิ่มสินค้าเข้าครัวกลาง</h1>
+        <?php
+        echo "<h1 class='h3 mb-2 text-gray-800'>ส่งสินค้าให้ซอย $branch</h1>";
+        ?>
         <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
@@ -146,7 +183,7 @@ include('includes/navbar.php');
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="m-0 font-weight-bold custom4">เพิ่มสินค้า</h6>
+                    <h6 class="m-0 font-weight-bold custom4">สต็อค</h6>
                 </div>
                 <div>
                     <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#additem">Add Item</button> -->
@@ -160,8 +197,11 @@ include('includes/navbar.php');
                         <thead>
                             <tr>
                                 <th>ชื่อ</th>
-                                <th>คงเหลือ</th>
-                                <th>เบิก</th>
+                                <th>ครัวกลางคงเหลือ</th>
+                                <?php
+                                echo "<th>ซอย $branch คงเหลือ</th>";
+                                ?>
+                                <th>ส่ง</th>
                             </tr>
                         </thead>
                     </table>
@@ -200,46 +240,55 @@ include('includes/navbar.php');
         fetch_data();
 
         function fetch_data() {
+            var branchname = "<?php echo $branchName; ?>"; // Assuming $branchname is defined in your PHP code
             var dataTable = $('#item_data').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "order": [],
                 "ajax": {
-                    url: "datamid.php",
+                    url: "dataout.php?branch=" + branchname,
                     type: "POST"
                 }
-
             });
         }
 
         $(document).on('click', '.withdraw', function() {
             var itemName = $(this).closest('tr').find('td:first').text();
-            var remainingValue = $(this).closest('tr').find('td:eq(1)').text(); // Extract item name from the first column of the clicked row
+            var remainingValue = $(this).closest('tr').find('td:eq(1)').text();
+            var remainingbranch = $(this).closest('tr').find('td:eq(2)').text(); // Extract item name from the first column of the clicked row
             $('#withdrawItemName').text(itemName); // Set the modal's item name text
             $('#withdrawModal').modal('show'); // Show the modal
             $('#remain').text(remainingValue);
+            $('#remainbranch').text(remainingbranch);
         });
         $('#withdrawModal').on('click', '.btn-success', function() {
             // Get the input value
             var inputValue = parseInt($('#withdrawInput').val());
             var name = $('#withdrawItemName').text();
             var remain = parseInt($('#remain').text());
-            var branch = 'ครัวกลาง';
-            var remainnew = remain + inputValue;
+            var remainss = parseInt($('#remainbranch').text());
+            var branch = '<?php echo $branchName; ?>';
+            var remainnew = remainss + inputValue;
+            var remainmid = remain - inputValue;
             $('#remains').text(remainnew);
             $('#withdrawInputs').text(inputValue);
-            if(isNaN(inputValue) || inputValue <= 0) {
+            $('#remainm').text(remainmid);
+            if (inputValue > remain) {
+                alert("Input quantity cannot be greater than remaining quantity.");
+                return; // Exit function early
+            }else if (isNaN(inputValue) || inputValue <= 0) {
                 alert("Error: Please input correct Data");
                 return;
             }
             $.ajax({
-                url: 'addstockmid.php', // Your server-side script to handle database update
+                url: 'sendstock.php', // Your server-side script to handle database update
                 method: 'POST',
                 data: {
                     input: inputValue,
                     name: name,
                     branch: branch,
-                    remainnew: remainnew
+                    remainnew: remainnew,
+                    remainmid: remainmid
                 },
                 success: function(response) {
                     console.log(response); // Log the response from the server

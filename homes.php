@@ -60,6 +60,7 @@ include('includes/navbar.php');
 <body id="page-top">
     <div class="container-fluid ">
         <h1 class="h3 mb-2 custom4">DASHBOARD</h1>
+        <button type="button" name="withdraw" class="btn btn-danger btn-xs line">เบิกสินค้า</button>
 
         <div class="row">
             <!-- First Report Table (Left) -->
@@ -208,6 +209,20 @@ include('includes/navbar.php');
 
             });
         }
+        $(".line").click(function(){
+        $.ajax({
+            url: "line.php",
+            type: "GET", // or "POST" depending on your requirement
+            success: function(response) {
+                // Handle success, if needed
+                console.log(response); // Log the response from line.php
+            },
+            error: function(xhr, status, error) {
+                // Handle errors, if needed
+                console.error(xhr.responseText); // Log any errors to the console
+            }
+        });
+    });
 
 
     });

@@ -5,10 +5,12 @@ $connect = mysqli_connect("localhost", "root", "", "tttstock");
 if (!$connect) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
-$query = "SELECT *
+$branchName = htmlspecialchars($_GET['branch']);
+$query = "SELECT item.item_name,item.stockmid,itembranch.stock,itembranch_id
 FROM itembranch
-JOIN item ON itembranch.item_id = item.item_id where branch_id = 2";
+JOIN item ON itembranch.item_id = item.item_id
+JOIN branch ON itembranch.branch_id = branch.branch_id
+WHERE branch.branch_name = '$branchName'";
 
 if(isset($_POST["search"]["value"])) {
     $query .= ' AND item_name LIKE "%'.$_POST["search"]["value"].'%"';
@@ -37,9 +39,10 @@ $data = array();
 while($row = mysqli_fetch_array($result)) {
     $sub_array = array();
     $sub_array[] = '<div  class="update" data-id="'.$row["itembranch_id"].'" data-column="item_name">' . $row["item_name"] . '</div>';
-    $sub_array[] = '<div contenteditable class="update" data-id="'.$row["itembranch_id"].'" data-column="minimum">' . $row["minimum"] . '</div>';
-    $sub_array[] = '<div contenteditable class="update" data-id="'.$row["itembranch_id"].'" data-column="stock">' . $row["stock"] . '</div>';
-    // $sub_array[] = '<button type="button" name="delete" class="btn btn-danger btn-xs delete" id="'.$row["item_id"].'">Delete</button>';
+    // $sub_array[] = '<div contenteditable class="update" data-id="'.$row["itembranch_id"].'" data-column="minimum">' . $row["minimum"] . '</div>';
+    $sub_array[] = '<div class="update" data-id="'.$row["itembranch_id"].'" data-column="stockmid">' . $row["stockmid"] . '</div>';
+    $sub_array[] = '<div class="update" data-id="'.$row["itembranch_id"].'" data-column="stockmid">' . $row["stock"] . '</div>';
+    $sub_array[] = '<button type="button" name="withdraw" class="btn btn-success btn-xs withdraw" id="'.$row["itembranch_id"].'">ส่งสินค้า</button>';
     
     $data[] = $sub_array;
 }
@@ -47,7 +50,7 @@ while($row = mysqli_fetch_array($result)) {
 function get_all_data($connect) {
     $query = "SELECT *
     FROM itembranch
-    JOIN item ON itembranch.item_id = item.item_id where branch_id = 2";
+    JOIN item ON itembranch.item_id = item.item_id where branch_id = 1";
     $result = mysqli_query($connect, $query);
 
     if (!$result) {

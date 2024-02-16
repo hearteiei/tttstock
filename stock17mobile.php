@@ -8,7 +8,7 @@ if (!isset($_SESSION['loggedin'])) {
     exit;
 }
 include('includes/header.php');
-include('includes/navbar.php');
+// include('includes/navbar.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,7 @@ include('includes/navbar.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Tables Example</title>
+    <title>Stock17</title>
 
     <!-- Custom fonts -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -63,7 +63,7 @@ include('includes/navbar.php');
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title m-0 font-weight-bold custom4" id="withdrawModalLabel">เพิ่มสินค้าเข้าครัวกลาง</h5>
+                    <h5 class="modal-title m-0 font-weight-bold custom4" id="withdrawModalLabel">เบิกสินค้า</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -79,7 +79,7 @@ include('includes/navbar.php');
                         </div>
                     </div>
                     <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">เพิ่มจำนวน</p>
+                        <p class="h4 mb-1 text-gray-800 m-0">เบิกจำนวน</p>
                     </div>
                     <!-- Input field on the next line -->
                     <div class="row mt-3">
@@ -138,7 +138,7 @@ include('includes/navbar.php');
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">เพิ่มสินค้าเข้าครัวกลาง</h1>
+        <h1 class="h3 mb-2 text-gray-800">สต็อกซอย 17</h1>
         <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
@@ -146,7 +146,7 @@ include('includes/navbar.php');
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="m-0 font-weight-bold custom4">เพิ่มสินค้า</h6>
+                    <h6 class="m-0 font-weight-bold custom4">สต็อก</h6>
                 </div>
                 <div>
                     <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#additem">Add Item</button> -->
@@ -182,13 +182,13 @@ include('includes/navbar.php');
     <script src="js/demo/datatables-demo.js"></script>
 
     <!-- Footer -->
-    <footer class="sticky-footer bg-white">
+    <!-- <footer class="sticky-footer bg-white">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
                 <span>Copyright &copy; Kunasin 2024</span>
             </div>
         </div>
-    </footer>
+    </footer> -->
     <!-- End of Footer -->
 
 </body>
@@ -205,7 +205,7 @@ include('includes/navbar.php');
                 "serverSide": true,
                 "order": [],
                 "ajax": {
-                    url: "datamid.php",
+                    url: "datastock17.php",
                     type: "POST"
                 }
 
@@ -221,31 +221,34 @@ include('includes/navbar.php');
         });
         $('#withdrawModal').on('click', '.btn-success', function() {
             // Get the input value
-            var inputValue = parseInt($('#withdrawInput').val());
+            var inputValue = $('#withdrawInput').val();
             var name = $('#withdrawItemName').text();
             var remain = parseInt($('#remain').text());
-            var branch = 'ครัวกลาง';
-            var remainnew = remain + inputValue;
+            var branch = 'soi17';
+            var remainnew = remain - inputValue;
             $('#remains').text(remainnew);
             $('#withdrawInputs').text(inputValue);
-            if(isNaN(inputValue) || inputValue <= 0) {
+            if (inputValue > remain) {
+                alert("Input quantity cannot be greater than remaining quantity.");
+                return; // Exit function early
+            }else if (isNaN(inputValue) || inputValue <= 0) {
                 alert("Error: Please input correct Data");
                 return;
             }
             $.ajax({
-                url: 'addstockmid.php', // Your server-side script to handle database update
+                url: 'updatestock.php', // Your server-side script to handle database update
                 method: 'POST',
                 data: {
                     input: inputValue,
                     name: name,
                     branch: branch,
-                    remainnew: remainnew
+                    remainnew:remainnew
                 },
                 success: function(response) {
                     console.log(response); // Log the response from the server
                     // Optionally, you can show a success message or perform other actions here
                     $('#successModal').modal('show');
-
+                    
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText); // Log any errors to the console

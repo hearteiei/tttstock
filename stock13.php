@@ -138,7 +138,7 @@ include('includes/navbar.php');
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">สต็อคซอย 13</h1>
+        <h1 class="h3 mb-2 text-gray-800">สต็อกซอย 13</h1>
         <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
@@ -146,7 +146,7 @@ include('includes/navbar.php');
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="m-0 font-weight-bold custom4">สต็อค</h6>
+                    <h6 class="m-0 font-weight-bold custom4">สต็อก</h6>
                 </div>
                 <div>
                     <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#additem">Add Item</button> -->
@@ -231,6 +231,9 @@ include('includes/navbar.php');
             if (inputValue > remain) {
                 alert("Input quantity cannot be greater than remaining quantity.");
                 return; // Exit function early
+            }else if (isNaN(inputValue) || inputValue <= 0) {
+                alert("Error: Please input correct Data");
+                return;
             }
             $.ajax({
                 url: 'updatestock.php', // Your server-side script to handle database update
