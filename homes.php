@@ -59,7 +59,7 @@ include('includes/navbar.php');
 
 <body id="page-top">
     <div class="container-fluid ">
-        <h1 class="h3 mb-2 custom4">DASHBOARD</h1>
+        <h1 class="h3 mb-2 custom4">หน้าหลัก</h1>
         <button type="button" name="withdraw" class="btn btn-danger btn-xs line">เบิกสินค้า</button>
 
         <div class="row">

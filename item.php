@@ -50,6 +50,9 @@ include('includes/navbar.php');
             padding: 5px 10px;
             /* Adjust the padding as needed */
         }
+        .custom4{
+            color: #76453B;
+        }
     </style>
 </head>
 
@@ -96,7 +99,7 @@ include('includes/navbar.php');
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="m-0 font-weight-bold text-primary">รายงานรายการสินค้า</h6>
+                    <h6 class="m-0 font-weight-bold custom4">รายงานรายการสินค้า</h6>
                 </div>
                 <div>
                     <button class="btn btn-primary" data-toggle="modal" data-target="#additem">เพิ่มรายการสินค้า</button>
