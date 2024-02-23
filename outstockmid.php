@@ -1,8 +1,8 @@
 <?php
 
-// We need to use sessions, so you should always start sessions using the below code.
+
 session_start();
-// If the user is not logged in redirect to the login page...
+
 if (!isset($_SESSION['loggedin'])) {
 
     header('Location: index.html');
@@ -240,7 +240,7 @@ include('includes/navbar.php');
         fetch_data();
 
         function fetch_data() {
-            var branchname = "<?php echo $branchName; ?>"; // Assuming $branchname is defined in your PHP code
+            var branchname = "<?php echo $branchName; ?>"; 
             var dataTable = $('#item_data').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -255,14 +255,14 @@ include('includes/navbar.php');
         $(document).on('click', '.withdraw', function() {
             var itemName = $(this).closest('tr').find('td:first').text();
             var remainingValue = $(this).closest('tr').find('td:eq(1)').text();
-            var remainingbranch = $(this).closest('tr').find('td:eq(2)').text(); // Extract item name from the first column of the clicked row
-            $('#withdrawItemName').text(itemName); // Set the modal's item name text
-            $('#withdrawModal').modal('show'); // Show the modal
+            var remainingbranch = $(this).closest('tr').find('td:eq(2)').text(); 
+            $('#withdrawItemName').text(itemName);
+            $('#withdrawModal').modal('show'); 
             $('#remain').text(remainingValue);
             $('#remainbranch').text(remainingbranch);
         });
         $('#withdrawModal').on('click', '.btn-success', function() {
-            // Get the input value
+           
             var inputValue = parseInt($('#withdrawInput').val());
             var name = $('#withdrawItemName').text();
             var remain = parseInt($('#remain').text());
@@ -275,13 +275,13 @@ include('includes/navbar.php');
             $('#remainm').text(remainmid);
             if (inputValue > remain) {
                 alert("Input quantity cannot be greater than remaining quantity.");
-                return; // Exit function early
+                return; 
             }else if (isNaN(inputValue) || inputValue <= 0) {
                 alert("Error: Please input correct Data");
                 return;
             }
             $.ajax({
-                url: 'sendstock.php', // Your server-side script to handle database update
+                url: 'sendstock.php', 
                 method: 'POST',
                 data: {
                     input: inputValue,
@@ -291,17 +291,17 @@ include('includes/navbar.php');
                     remainmid: remainmid
                 },
                 success: function(response) {
-                    console.log(response); // Log the response from the server
-                    // Optionally, you can show a success message or perform other actions here
+                    console.log(response);
+                
                     $('#successModal').modal('show');
 
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr.responseText); // Log any errors to the console
+                    console.error(xhr.responseText); 
                 }
             });
 
-            // Close the modal
+            
             $('#withdrawModal').modal('hide');
         });
         $('#successModal').on('click', '.closeee', function() {

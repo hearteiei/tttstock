@@ -1,5 +1,4 @@
 <?php
-//fetch.php
 $connect = mysqli_connect("localhost", "root", "", "tttstock");
 
 if (!$connect) {
@@ -15,7 +14,7 @@ if(isset($_POST["search"]["value"])) {
 }
 
 if(isset($_POST["order"])) {
-    // Add your order by logic here if needed
+ 
 }
 
 $query1 = '';
@@ -64,6 +63,5 @@ $output = array(
     "data"    => $data
 );
 echo json_encode($output);
-// echo($number_filter_row);
 mysqli_close($connect);
 ?>

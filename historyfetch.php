@@ -1,5 +1,4 @@
 <?php
-//fetch.php
 $connect = mysqli_connect("localhost", "root", "", "tttstock");
 
 if (!$connect) {
@@ -65,6 +64,5 @@ $output = array(
     "data"    => $data
 );
 echo json_encode($output);
-// echo($number_filter_row);
 mysqli_close($connect);
 ?>

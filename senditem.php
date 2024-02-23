@@ -1,8 +1,6 @@
 <?php
 
-// We need to use sessions, so you should always start sessions using the below code.
 session_start();
-// If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
     header('Location: index.html');
     exit;
@@ -13,13 +11,12 @@ include('includes/navbar.php');
 <style>
     .button-container {
     display: flex;
-    gap: 10px; /* Adjust the gap value as needed */}
-    .custom-card-height {
-    height: 400px; /* Adjust the height value as needed */
+    gap: 10px; 
+    height: 400px; 
 }
 .custom-large-button {
-    font-size: 28px; /* Adjust the font size as needed */
-    padding: 5px 10px; /* Adjust the padding as needed */
+    font-size: 28px; 
+    padding: 5px 10px; 
 }
 
 

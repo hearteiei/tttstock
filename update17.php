@@ -16,7 +16,7 @@ if(isset($_POST["id"]))
     $stmt = mysqli_prepare($connect, $query);
 
     if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'ss', $value, $id); // Assuming both values are strings
+        mysqli_stmt_bind_param($stmt, 'ss', $value, $id); 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         echo 'Data Updated';

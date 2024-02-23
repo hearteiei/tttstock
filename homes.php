@@ -1,8 +1,6 @@
 <?php
 
-// We need to use sessions, so you should always start sessions using the below code.
 session_start();
-// If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
     header('Location: index.html');
     exit;
@@ -60,7 +58,7 @@ include('includes/navbar.php');
 <body id="page-top">
     <div class="container-fluid ">
         <h1 class="h3 mb-2 custom4">หน้าหลัก</h1>
-        <button type="button" name="withdraw" class="btn btn-danger btn-xs line">เบิกสินค้า</button>
+        <!-- <button type="button" name="withdraw" class="btn btn-danger btn-xs line">เบิกสินค้า</button> -->
 
         <div class="row">
             <!-- First Report Table (Left) -->
@@ -212,14 +210,12 @@ include('includes/navbar.php');
         $(".line").click(function(){
         $.ajax({
             url: "line.php",
-            type: "GET", // or "POST" depending on your requirement
+            type: "GET", 
             success: function(response) {
-                // Handle success, if needed
-                console.log(response); // Log the response from line.php
+                console.log(response); 
             },
             error: function(xhr, status, error) {
-                // Handle errors, if needed
-                console.error(xhr.responseText); // Log any errors to the console
+                console.error(xhr.responseText); 
             }
         });
     });
