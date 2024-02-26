@@ -1,5 +1,5 @@
 <?php
-$connect = mysqli_connect("localhost", "root", "", "tttstock");
+include 'connect.php';
 if(isset($_POST["id"]))
 {
     $value = mysqli_real_escape_string($connect, $_POST["value"]);

@@ -1,11 +1,10 @@
 <?php
-$connection = mysqli_connect("localhost","root","");
-$db = mysqli_select_db($connection, 'tttstock');
+include 'connect.php';
 if(isset($_POST['insertdata']))
 {
     $name = $_POST['name'];
     $query = "INSERT INTO branch (`branch_name`) VALUES ('$name')";
-    $query_run = mysqli_query($connection, $query);
+    $query_run = mysqli_query($connect, $query);
 
     if($query_run)
     {

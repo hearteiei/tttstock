@@ -1,11 +1,6 @@
 <?php
 
-$connect = mysqli_connect("localhost", "root", "", "tttstock");
-
-if (!$connect) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
+include 'connect.php';
 $query = "SELECT *
 FROM itembranch
 JOIN item ON itembranch.item_id = item.item_id where branch_id = 2";

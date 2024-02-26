@@ -38,13 +38,10 @@ include('includes/navbar.php');
 
                             <div class="button-container">
                                 <?php
-                                $conn = mysqli_connect("localhost", "root", "", "tttstock");
-                                if (!$conn) {
-                                    die("Connection failed: " . mysqli_connect_error());
-                                }
+                                include 'connect.php';
 
                                 $query = "SELECT * FROM branch";
-                                $result = mysqli_query($conn, $query);
+                                $result = mysqli_query($connect, $query);
 
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $branchname = $row['branch_name'];
@@ -53,7 +50,7 @@ include('includes/navbar.php');
 
                                 }
 
-                                mysqli_close($conn);
+                                mysqli_close($connect);
                                 ?>
                             </div>
 

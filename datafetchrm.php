@@ -1,11 +1,6 @@
 <?php
 
-$connect = mysqli_connect("localhost", "root", "", "tttstock");
-
-if (!$connect) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
+include 'connect.php';
 $query = "SELECT * FROM item ";
 
 if(isset($_POST["search"]["value"])) {

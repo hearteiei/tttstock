@@ -1,10 +1,6 @@
 <?php
 
-$connect = mysqli_connect("localhost", "root", "", "tttstock");
-
-if (!$connect) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include 'connect.php';
 $branchName = htmlspecialchars($_GET['branch']);
 $query = "SELECT item.item_name,item.stockmid,itembranch.stock,itembranch_id
 FROM itembranch

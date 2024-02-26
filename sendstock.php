@@ -1,16 +1,6 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "tttstock";
-
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'connect.php';
 
 
 $inputValue = $_POST['input']; 
@@ -18,14 +8,18 @@ $name = $_POST['name'];
 $branch = $_POST['branch']; 
 $remain = $_POST['remainnew']; 
 $remainmid = $_POST['remainmid']; 
-
+if ($branch == "soi13") {
+    $branchname = "13";
+} elseif ($branch == "soi17") {
+    $branchname = "17";
+}
 
 
 $sql_check_remaining = "SELECT stockmid FROM itembranch,item
                         WHERE itembranch.item_id IN (SELECT item_id FROM item WHERE item_name = '$name') 
                         AND branch_id IN (SELECT branch_id FROM branch WHERE branch_name = '$branch')
                         AND item.item_name='$name'";
-$result_check_remaining = $conn->query($sql_check_remaining);
+$result_check_remaining = $connect->query($sql_check_remaining);
 
 if ($result_check_remaining->num_rows > 0) {
     $row = $result_check_remaining->fetch_assoc();
@@ -47,24 +41,24 @@ $sql_update_stock = "UPDATE itembranch,item
         AND item.item_name='$name'";
 
 
-if ($conn->query($sql_update_stock) === TRUE) {
+if ($connect->query($sql_update_stock) === TRUE) {
    
     $sql_insert_history = "INSERT INTO history (item_name, branch_name, quantity, remain, action)
-                            VALUES ('$name', '$branch', '$inputValue','$remain','เพิ่ม'),('$name', 'ครัวกลาง', '$inputValue','$remainmid','ส่งไปซอย$branch')";
-    if ($conn->query($sql_insert_history) === TRUE) {
+                            VALUES ('$name', '$branch', '$inputValue','$remain','เพิ่ม'),('$name', 'ครัวกลาง', '$inputValue','$remainmid','ส่งไปซอย$branchname')";
+    if ($connect->query($sql_insert_history) === TRUE) {
 
         echo "Stock updated and transaction recorded successfully";
     } else {
 
-        echo "Error recording transaction: " . $conn->error;
+        echo "Error recording transaction: " . $connect->error;
     }
 } else {
   
-    echo "Error updating stock: " . $conn->error;
+    echo "Error updating stock: " . $connect->error;
 }
 
 
-$conn->close();
+$connect->close();
 ?>
 
 
