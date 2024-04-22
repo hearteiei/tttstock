@@ -10,16 +10,15 @@ include('includes/navbar.php');
 ?>
 <style>
     .button-container {
-    display: flex;
-    gap: 10px; 
-    height: 400px; 
-}
-.custom-large-button {
-    font-size: 28px; 
-    padding: 5px 10px; 
-}
+        display: flex;
+        gap: 10px;
+        height: 400px;
+    }
 
-
+    .custom-large-button {
+        font-size: 28px;
+        padding: 5px 10px;
+    }
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -45,9 +44,13 @@ include('includes/navbar.php');
 
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $branchname = $row['branch_name'];
+                                    if ($branchname == "soi17") {
+                                        $b=17;
+                                    }else if($branchname == "soi13"){
+                                        $b=13;
+                                    }
 
-                                    echo "<a href='outstockmid.php?branch=$branchname'><button style='color: white;' class='custom-large-button btn custom-orange-sidebar btn-icon-split'>$branchname</button></a>";
-
+                                    echo "<a href='outstockmid.php?branch=$branchname'><button style='color: white;' class='custom-large-button btn custom-orange-sidebar btn-icon-split'>ซอย$b</button></a>";
                                 }
 
                                 mysqli_close($connect);

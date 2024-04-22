@@ -103,7 +103,7 @@ include('includes/navbar.php');
                     <!-- Input field on the next line -->
                     <div class="row mt-3">
                         <div class="col">
-                            <input type="text" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
+                            <input type="number" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
                         </div>
                     </div>
                 </div>

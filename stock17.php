@@ -69,22 +69,17 @@ include('includes/navbar.php');
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <p class="h4 mb-1 text-gray-800" id="withdrawItemName"></p>
+                    <p class="h4 mb-3 text-gray-800" id="withdrawItemName"></p>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <p class="h6 text-gray-600">คงเหลือ</p>
+                            <p class="h5 text-gray-800" id="remain"></p>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0">คงเหลือ</p>
-                        </div>
-                        <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0" id="remain"></p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">เบิกจำนวน</p>
-                    </div>
-                    <!-- Input field on the next line -->
-                    <div class="row mt-3">
-                        <div class="col">
-                            <input type="text" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
+                            <p class="h5 text-gray-600">เบิกจำนวน</p>
+                            <input type="number" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
                         </div>
                     </div>
                 </div>
@@ -106,22 +101,15 @@ include('includes/navbar.php');
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <p class="h4 mb-1 text-gray-800" id="withdrawItemName"></p>
-                    <div class="row">
+                    <p class="h4 mb-3 text-gray-800" id="withdrawSuccessItemName"></p>
+                    <div class="row mb-3">
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0">จำนวน</p>
+                            <p class="h5 text-gray-600">เบิกจำนวน</p>
+                            <p class="h4 text-gray-800" id="withdrawInputs"></p>
                         </div>
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0" id="withdrawInputs"></p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">คงเหลือ</p>
-                    </div>
-                    <!-- Input field on the next line -->
-                    <div class="row mt-3">
-                        <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0" id="remains"></p>
+                            <p class="h5 text-gray-600">คงเหลือ</p>
+                            <p class="h4 text-gray-800" id="remains"></p>
                         </div>
                     </div>
                 </div>
@@ -214,44 +202,47 @@ include('includes/navbar.php');
 
         $(document).on('click', '.withdraw', function() {
             var itemName = $(this).closest('tr').find('td:first').text();
-            var remainingValue = $(this).closest('tr').find('td:eq(1)').text(); 
-            $('#withdrawItemName').text(itemName); 
-            $('#withdrawModal').modal('show'); 
+            var remainingValue = $(this).closest('tr').find('td:eq(1)').text();
+            $('#withdrawItemName').text(itemName);
+            $('#withdrawModal').modal('show');
             $('#remain').text(remainingValue);
         });
         $('#withdrawModal').on('click', '.btn-success', function() {
-            
+
             var inputValue = $('#withdrawInput').val();
             var name = $('#withdrawItemName').text();
             var remain = parseInt($('#remain').text());
             var branch = 'soi17';
             var remainnew = remain - inputValue;
+            $('#withdrawSuccessItemName').text(name);
             $('#remains').text(remainnew);
             $('#withdrawInputs').text(inputValue);
             if (inputValue > remain) {
                 alert("Input quantity cannot be greater than remaining quantity.");
-                return; 
-            }else if (isNaN(inputValue) || inputValue <= 0) {
+                return;
+            } else if (isNaN(inputValue) || inputValue <= 0) {
                 alert("Error: Please input correct Data");
                 return;
             }
             $.ajax({
-                url: 'updatestock.php', 
+                url: 'updatestock.php',
                 method: 'POST',
                 data: {
                     input: inputValue,
                     name: name,
                     branch: branch,
-                    remainnew:remainnew
+                    remainnew: remainnew
                 },
                 success: function(response) {
-                    console.log(response); 
-                   
+                    console.log(response);
+                    $('#withdrawItemName').text(name);
+
                     $('#successModal').modal('show');
-                    
+
+
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr.responseText); 
+                    console.error(xhr.responseText);
                 }
             });
 

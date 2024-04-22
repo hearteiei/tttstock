@@ -66,26 +66,47 @@ include('includes/navbar.php');
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body text-center">
-                    <p class="h4 mb-1 text-gray-800" id="withdrawItemName"></p>
+                <!-- <div class="modal-body text-center">
+                    <p class="h4 mb-3 text-gray-800" id="withdrawItemName"></p>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <p class="h4 text-gray-800">คงเหลือ</p>
+                            <p class="h4 text-gray-800" id="remain"></p>
+                        </div>
+                        <div class="col">
+                            <p class="h4 text-gray-800">เพิ่มจำนวน</p>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0">คงเหลือ</p>
-                        </div>
-                        <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0" id="remain"></p>
+                            <p class="h4 text-gray-800">เพิ่มจำนวน</p>
+                            <input type="number" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
                         </div>
                     </div>
-                    <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">เพิ่มจำนวน</p>
-                    </div>
-                    <!-- Input field on the next line -->
-                    <div class="row mt-3">
+                </div> -->
+
+                <div class="modal-body text-center">
+                    <p class="h4 mb-3 text-gray-800" id="withdrawItemName"></p>
+                    <div class="row mb-3">
                         <div class="col">
-                            <input type="text" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
+                            <p class="h6 text-gray-600">คงเหลือ</p>
+                            <p class="h5 text-gray-800" id="remain"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="h5 text-gray-600">เพิ่มจำนวน</p>
+                            <input type="number" class="form-control" id="withdrawInput" placeholder="Enter Quantity">
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success">Save</button>
@@ -104,22 +125,15 @@ include('includes/navbar.php');
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <p class="h4 mb-1 text-gray-800" id="withdrawItemName"></p>
+                    <p class="h4 mb-3 text-gray-800" id="withdrawnames"></p>
                     <div class="row">
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0">จำนวน</p>
+                            <p class="h4 mb-1 text-gray-800">เพิ่มจำนวน</p>
+                            <p class="h4 mb-1 text-gray-800" id="withdrawInputs"></p>
                         </div>
                         <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0" id="withdrawInputs"></p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <p class="h4 mb-1 text-gray-800 m-0">คงเหลือ</p>
-                    </div>
-                    <!-- Input field on the next line -->
-                    <div class="row mt-3">
-                        <div class="col">
-                            <p class="h4 mb-1 text-gray-800 m-0" id="remains"></p>
+                            <p class="h4 mb-1 text-gray-800">คงเหลือ</p>
+                            <p class="h4 mb-1 text-gray-800" id="remains"></p>
                         </div>
                     </div>
                 </div>
@@ -212,9 +226,9 @@ include('includes/navbar.php');
 
         $(document).on('click', '.withdraw', function() {
             var itemName = $(this).closest('tr').find('td:first').text();
-            var remainingValue = $(this).closest('tr').find('td:eq(1)').text(); 
-            $('#withdrawItemName').text(itemName); 
-            $('#withdrawModal').modal('show'); 
+            var remainingValue = $(this).closest('tr').find('td:eq(1)').text();
+            $('#withdrawItemName').text(itemName);
+            $('#withdrawModal').modal('show');
             $('#remain').text(remainingValue);
         });
         $('#withdrawModal').on('click', '.btn-success', function() {
@@ -223,14 +237,15 @@ include('includes/navbar.php');
             var remain = parseInt($('#remain').text());
             var branch = 'ครัวกลาง';
             var remainnew = remain + inputValue;
+            $('#withdrawnames').text(name);
             $('#remains').text(remainnew);
             $('#withdrawInputs').text(inputValue);
-            if(isNaN(inputValue) || inputValue <= 0) {
+            if (isNaN(inputValue) || inputValue <= 0) {
                 alert("Error: Please input correct Data");
                 return;
             }
             $.ajax({
-                url: 'addstockmid.php', 
+                url: 'addstockmid.php',
                 method: 'POST',
                 data: {
                     input: inputValue,
